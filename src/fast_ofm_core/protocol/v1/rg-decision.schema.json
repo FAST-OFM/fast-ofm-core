@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/rg-decision.schema.json",
+  "title": "Fast OFM bounded R/G correction decision",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "measurement", "control", "iteration", "total_correction_um"],
+      "properties": {
+        "profile": {"type": "object"},
+        "measurement": {"type": "object"},
+        "control": {"type": "object"},
+        "iteration": {"type": "integer", "minimum": 0},
+        "total_correction_um": {"type": "number", "minimum": 0}
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {"enum": ["focused", "move", "refused"]},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

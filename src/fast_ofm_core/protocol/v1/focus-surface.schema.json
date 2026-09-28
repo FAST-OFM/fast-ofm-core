@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/focus-surface.schema.json",
+  "title": "Fast OFM bounded focus-surface payloads",
+  "$defs": {
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor_id", "position_um", "source", "confidence"],
+      "properties": {
+        "anchor_id": {"type": "string", "minLength": 1},
+        "position_um": {"$ref": "common.schema.json#/$defs/xyz_um"},
+        "source": {"enum": ["rg", "white", "operator", "replay"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "fit_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchors", "limits"],
+      "properties": {
+        "anchors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/anchor"}},
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maximum_support_distance_um", "maximum_abs_slope", "maximum_residual_um"],
+          "properties": {
+            "maximum_support_distance_um": {"type": "number", "exclusiveMinimum": 0},
+            "maximum_abs_slope": {"type": "number", "exclusiveMinimum": 0},
+            "maximum_residual_um": {"type": "number", "exclusiveMinimum": 0},
+            "maximum_extrapolation_um": {"type": "number", "minimum": 0},
+            "maximum_prediction_delta_um": {"type": "number", "exclusiveMinimum": 0},
+            "minimum_plane_points": {"type": "integer", "minimum": 4},
+            "maximum_neighbors": {"type": "integer", "minimum": 4},
+            "maximum_condition_number": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      }
+    },
+    "predict_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchors", "limits", "target_um"],
+      "properties": {
+        "anchors": {"type": "array", "items": {"$ref": "#/$defs/anchor"}},
+        "limits": {"$ref": "#/$defs/fit_request/properties/limits"},
+        "target_um": {"$ref": "common.schema.json#/$defs/xyz_um"}
+      }
+    },
+    "fit_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface_id", "anchor_count", "settings", "method"],
+      "properties": {
+        "surface_id": {"type": "string", "minLength": 1},
+        "anchor_count": {"type": "integer", "minimum": 1},
+        "settings": {"type": "object"},
+        "method": {"const": "bounded_local_on_demand"}
+      }
+    },
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["position_um", "status"],
+      "properties": {
+        "position_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "status": {"enum": ["predicted", "refused"]},
+        "predicted_z_um": {"type": "number"},
+        "uncertainty_um": {"type": "number", "minimum": 0},
+        "support_distance_um": {"type": "number", "minimum": 0},
+        "model": {"enum": ["nearest", "row", "plane"]},
+        "refusal_code": {"type": "string"},
+        "support_count": {"type": "integer", "minimum": 0},
+        "reason": {"type": "string", "minLength": 1},
+        "fit_residual_um": {"type": "number", "minimum": 0},
+        "slope_um_per_um": {"type": "number", "minimum": 0},
+        "extrapolation_um": {"type": "number", "minimum": 0},
+        "validation_error_um": {"type": "number", "minimum": 0}
+      }
+    },
+    "exact_predict_request": {"$ref": "focus-surface-exact.schema.json#/$defs/exact_predict_request"},
+    "exact_prediction": {"$ref": "focus-surface-exact.schema.json#/$defs/exact_prediction"}
+  }
+}

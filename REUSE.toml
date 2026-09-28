@@ -1,0 +1,39 @@
+version = 1
+
+[[annotations]]
+path = [
+  "src/fast_ofm_core/**",
+  "tests/**",
+  "pyproject.toml",
+  "setup.py",
+  "tools/**",
+  "validation/Dockerfile.arm64",
+  ".github/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alexander Fridman"
+SPDX-License-Identifier = "PolyForm-Noncommercial-1.0.0"
+
+[[annotations]]
+path = [
+  "README.md",
+  "AUTHORS.md",
+  "LICENSING.md",
+  "COMMERCIAL_LICENSING.md",
+  "LICENSE",
+  "VALIDATION.md",
+  "PROVENANCE.csv",
+  "REUSE.toml",
+  ".gitignore",
+  "validation/README.md",
+  "examples/protocol/README.md",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alexander Fridman"
+SPDX-License-Identifier = "CC-BY-NC-SA-4.0"
+
+[[annotations]]
+path = ["src/fast_ofm_core/protocol/v1/*.json", "examples/protocol/v1/*.json", "PROTOCOL.md"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Alexander Fridman"
+SPDX-License-Identifier = "Apache-2.0"

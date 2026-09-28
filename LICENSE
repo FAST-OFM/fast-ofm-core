@@ -1,0 +1,13 @@
+Fast OFM Core licensing notice
+
+Original Fast OFM software and tests in this private release candidate are
+licensed under the PolyForm Noncommercial License 1.0.0. Commercial use is not
+granted and requires a separate written license.
+
+Protocol schemas are licensed under Apache-2.0 so independent clients can
+interoperate without receiving rights to the PolyForm-covered algorithms. No
+GPL or LGPL-derived implementation may be added to this repository.
+
+See LICENSING.md and LICENSES/ for details.
+
+Copyright 2026 Alexander Fridman.

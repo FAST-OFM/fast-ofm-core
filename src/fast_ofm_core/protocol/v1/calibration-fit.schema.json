@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/calibration-fit.schema.json",
+  "title": "Fast OFM R/G calibration fit payload and result",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["series"],
+      "properties": {
+        "series": {"$ref": "common.schema.json#/$defs/artifact"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calibration_id", "calibration_status", "reason", "profile"],
+      "properties": {
+        "calibration_id": {"type": "string", "minLength": 1},
+        "calibration_status": {"enum": ["candidate", "valid"]},
+        "reason": {"type": "string", "minLength": 1},
+        "profile": {"type": "object"}
+      }
+    }
+  }
+}

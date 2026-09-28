@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/rg-measure.schema.json",
+  "title": "Fast OFM R/G measurement payload and result",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "calibration", "position_um"],
+      "properties": {
+        "frame": {"$ref": "common.schema.json#/$defs/artifact"},
+        "calibration": {"$ref": "common.schema.json#/$defs/artifact"},
+        "position_um": {"$ref": "common.schema.json#/$defs/xyz_um"},
+        "maximum_abs_correction_um": {"type": "number", "exclusiveMinimum": 0},
+        "diagnostics": {"type": "boolean", "default": false}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measurement_status",
+        "confidence",
+        "calibration_id",
+        "selected_patch_count",
+        "correction_status",
+        "qc"
+      ],
+      "properties": {
+        "measurement_status": {"enum": ["accepted", "refused"]},
+        "refusal_code": {"type": "string"},
+        "shift_px": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dx_px", "dy_px"],
+          "properties": {
+            "dx_px": {"type": "number"},
+            "dy_px": {"type": "number"}
+          }
+        },
+        "shift_uncertainty_px": {"type": "number", "minimum": 0},
+        "proposed_z_correction_um": {"type": "number"},
+        "correction_was_clamped": {"type": "boolean"},
+        "correction_status": {"enum": ["focused", "move", "refused", "not_requested"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "calibration_id": {"type": "string", "minLength": 1},
+        "selected_patch_count": {"type": "integer", "minimum": 0},
+        "qc": {"type": "object"}
+      }
+    }
+  }
+}

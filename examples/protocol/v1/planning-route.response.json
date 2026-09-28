@@ -1,0 +1,76 @@
+{
+  "protocol_version": "1.0",
+  "request_id": "00000000-0000-4000-8000-000000000001",
+  "result": {
+    "actions": [
+      {
+        "component_id": "component-1",
+        "index": 0,
+        "kind": "component_start",
+        "position_um": {
+          "x_um": 100.0,
+          "y_um": 200.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 1,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 100.0,
+          "y_um": 200.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 2,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 110.0,
+          "y_um": 200.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 3,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 120.0,
+          "y_um": 200.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 4,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 120.0,
+          "y_um": 180.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 5,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 110.0,
+          "y_um": 180.0
+        }
+      },
+      {
+        "component_id": "component-1",
+        "index": 6,
+        "kind": "visit",
+        "position_um": {
+          "x_um": 100.0,
+          "y_um": 180.0
+        }
+      }
+    ],
+    "component_count": 1,
+    "input_digest": "ba78dade301f7af60ace8cba72b33743a62e0dced371d6533316e3217e710bdc",
+    "route_id": "route-ba78dade301f7af6"
+  },
+  "status": "completed"
+}
+

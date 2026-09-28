@@ -1,0 +1,1126 @@
+{
+  "$defs": {
+    "FocusAxisScale": {
+      "additionalProperties": false,
+      "description": "One axis conversion frozen at the stage boundary, not a motion profile.",
+      "properties": {
+        "axis": {
+          "enum": [
+            "x",
+            "y",
+            "z"
+          ],
+          "title": "Axis",
+          "type": "string"
+        },
+        "direction_sign": {
+          "enum": [
+            -1,
+            1
+          ],
+          "title": "Direction Sign",
+          "type": "integer"
+        },
+        "units_per_mm": {
+          "exclusiveMinimum": 0,
+          "title": "Units Per Mm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "axis",
+        "units_per_mm",
+        "direction_sign"
+      ],
+      "title": "FocusAxisScale",
+      "type": "object"
+    },
+    "FocusBinding": {
+      "additionalProperties": false,
+      "description": "Explicit identities and parameters that make surface data compatible.\n\nThe reference has no age or TTL.  A changed/lost reference is represented by\nits identity/status and must be checked against the live frozen snapshot.",
+      "properties": {
+        "approach_parameters": {
+          "$ref": "#/$defs/RGFocusApproachSettings"
+        },
+        "approach_profile_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Approach Profile Id",
+          "type": "string"
+        },
+        "approach_status": {
+          "enum": [
+            "valid",
+            "candidate"
+          ],
+          "title": "Approach Status",
+          "type": "string"
+        },
+        "axis_scales": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/FocusAxisScale"
+            },
+            {
+              "$ref": "#/$defs/FocusAxisScale"
+            },
+            {
+              "$ref": "#/$defs/FocusAxisScale"
+            }
+          ],
+          "title": "Axis Scales",
+          "type": "array"
+        },
+        "camera_stage_mapping_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Camera Stage Mapping Id",
+          "type": "string"
+        },
+        "camera_stage_mapping_status": {
+          "enum": [
+            "valid",
+            "candidate"
+          ],
+          "title": "Camera Stage Mapping Status",
+          "type": "string"
+        },
+        "geometry_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Geometry Id",
+          "type": "string"
+        },
+        "green_flat_field_profile_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Green Flat Field Profile Id",
+          "type": "string"
+        },
+        "green_flat_field_status": {
+          "enum": [
+            "valid",
+            "validation_failed"
+          ],
+          "title": "Green Flat Field Status",
+          "type": "string"
+        },
+        "red_flat_field_profile_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Red Flat Field Profile Id",
+          "type": "string"
+        },
+        "red_flat_field_status": {
+          "enum": [
+            "valid",
+            "validation_failed"
+          ],
+          "title": "Red Flat Field Status",
+          "type": "string"
+        },
+        "reference_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Reference Id",
+          "type": "string"
+        },
+        "reference_status": {
+          "enum": [
+            "valid",
+            "lost"
+          ],
+          "title": "Reference Status",
+          "type": "string"
+        },
+        "rg_focus_model_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Rg Focus Model Id",
+          "type": "string"
+        },
+        "rg_focus_model_status": {
+          "enum": [
+            "valid",
+            "candidate"
+          ],
+          "title": "Rg Focus Model Status",
+          "type": "string"
+        },
+        "stage_controller_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Stage Controller Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stage_controller_id",
+        "reference_id",
+        "reference_status",
+        "axis_scales",
+        "camera_stage_mapping_id",
+        "camera_stage_mapping_status",
+        "geometry_id",
+        "rg_focus_model_id",
+        "rg_focus_model_status",
+        "red_flat_field_profile_id",
+        "red_flat_field_status",
+        "green_flat_field_profile_id",
+        "green_flat_field_status",
+        "approach_profile_id",
+        "approach_status",
+        "approach_parameters"
+      ],
+      "title": "FocusBinding",
+      "type": "object"
+    },
+    "FocusObservation": {
+      "additionalProperties": false,
+      "description": "One immutable field result at a settled commanded XYZ readback.",
+      "properties": {
+        "attempt_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "binding": {
+          "$ref": "#/$defs/FocusBinding"
+        },
+        "field_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Field Id",
+          "type": "string"
+        },
+        "final_readback_monotonic_s": {
+          "minimum": 0,
+          "title": "Final Readback Monotonic S",
+          "type": "number"
+        },
+        "final_readback_settled": {
+          "title": "Final Readback Settled",
+          "type": "boolean"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "pre_update_prediction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FocusPredictionEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provenance": {
+          "$ref": "#/$defs/FocusObservationProvenance"
+        },
+        "quality": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FocusObservationQuality"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "readback_kind": {
+          "const": "commanded_not_encoder",
+          "default": "commanded_not_encoder",
+          "title": "Readback Kind",
+          "type": "string"
+        },
+        "recorded_monotonic_s": {
+          "minimum": 0,
+          "title": "Recorded Monotonic S",
+          "type": "number"
+        },
+        "scan_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Scan Id",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "seed",
+            "led_autofocus",
+            "white_autofocus",
+            "surface_prediction",
+            "preload",
+            "none"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "candidate",
+            "intermediate",
+            "failed",
+            "cancelled",
+            "no_tissue",
+            "imaged"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "x_um": {
+          "title": "X Um",
+          "type": "number"
+        },
+        "y_um": {
+          "title": "Y Um",
+          "type": "number"
+        },
+        "z_um": {
+          "title": "Z Um",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scan_id",
+        "field_id",
+        "attempt_id",
+        "observation_id",
+        "x_um",
+        "y_um",
+        "z_um",
+        "final_readback_settled",
+        "final_readback_monotonic_s",
+        "recorded_monotonic_s",
+        "source",
+        "status",
+        "binding",
+        "provenance"
+      ],
+      "title": "FocusObservation",
+      "type": "object"
+    },
+    "FocusObservationProvenance": {
+      "additionalProperties": false,
+      "description": "Stable result/report/frame identities; paths are references, not file contents.",
+      "properties": {
+        "capture_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Capture Ids",
+          "type": "array"
+        },
+        "report_ref": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Report Ref",
+          "type": "string"
+        },
+        "result_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Result Id",
+          "type": "string"
+        },
+        "rg_measurement_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rg Measurement Id"
+        }
+      },
+      "required": [
+        "result_id",
+        "report_ref"
+      ],
+      "title": "FocusObservationProvenance",
+      "type": "object"
+    },
+    "FocusObservationQuality": {
+      "additionalProperties": false,
+      "description": "Saved LED measurement QC; confidence is diagnostic, not confirmation alone.",
+      "properties": {
+        "accepted_patch_count": {
+          "minimum": 0,
+          "title": "Accepted Patch Count",
+          "type": "integer"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "final_error_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Final Error Um"
+        },
+        "focus_tolerance_um": {
+          "exclusiveMinimum": 0,
+          "title": "Focus Tolerance Um",
+          "type": "number"
+        },
+        "independent_post_move_verification": {
+          "title": "Independent Post Move Verification",
+          "type": "boolean"
+        },
+        "inlier_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Inlier Fraction",
+          "type": "number"
+        },
+        "measurement_status": {
+          "enum": [
+            "ready",
+            "no_tissue",
+            "insufficient_tissue",
+            "low_signal",
+            "saturated",
+            "spectral_mismatch",
+            "correlation_failed",
+            "inconsistent_shifts"
+          ],
+          "title": "Measurement Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "measurement_status",
+        "confidence",
+        "accepted_patch_count",
+        "inlier_fraction",
+        "focus_tolerance_um",
+        "independent_post_move_verification"
+      ],
+      "title": "FocusObservationQuality",
+      "type": "object"
+    },
+    "FocusPredictionDiagnostics": {
+      "additionalProperties": false,
+      "description": "Fit/support diagnostics, explicitly not a confidence interval.",
+      "properties": {
+        "candidate_observation_count": {
+          "minimum": 0,
+          "title": "Candidate Observation Count",
+          "type": "integer"
+        },
+        "excluded_observation_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Excluded Observation Ids",
+          "type": "array"
+        },
+        "extrapolation_distance_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extrapolation Distance Um"
+        },
+        "fit_condition_number": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fit Condition Number"
+        },
+        "fit_inlier_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fit Inlier Fraction"
+        },
+        "fit_rank": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fit Rank"
+        },
+        "fit_rmse_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fit Rmse Um"
+        },
+        "interpretation": {
+          "const": "diagnostic_not_confidence_interval",
+          "default": "diagnostic_not_confidence_interval",
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "local_observation_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Local Observation Count",
+          "type": "integer"
+        },
+        "maximum_absolute_residual_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Absolute Residual Um"
+        },
+        "nearest_distance_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nearest Distance Um"
+        },
+        "plane_slope_magnitude_um_per_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plane Slope Magnitude Um Per Um"
+        },
+        "plane_slope_x_um_per_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plane Slope X Um Per Um"
+        },
+        "plane_slope_y_um_per_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plane Slope Y Um Per Um"
+        },
+        "prediction_delta_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prediction Delta Um"
+        },
+        "selected_support_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Selected Support Count",
+          "type": "integer"
+        },
+        "support_age_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Support Age S"
+        }
+      },
+      "required": [
+        "candidate_observation_count"
+      ],
+      "title": "FocusPredictionDiagnostics",
+      "type": "object"
+    },
+    "FocusPredictionEvidence": {
+      "additionalProperties": false,
+      "description": "Prediction saved before an observation, including its later signed error.",
+      "properties": {
+        "predicted_z_um": {
+          "title": "Predicted Z Um",
+          "type": "number"
+        },
+        "prediction_error_um": {
+          "title": "Prediction Error Um",
+          "type": "number"
+        },
+        "prediction_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Prediction Id",
+          "type": "string"
+        },
+        "support_age_s": {
+          "minimum": 0,
+          "title": "Support Age S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "prediction_id",
+        "predicted_z_um",
+        "prediction_error_um",
+        "support_age_s"
+      ],
+      "title": "FocusPredictionEvidence",
+      "type": "object"
+    },
+    "FocusSurfaceSettings": {
+      "additionalProperties": false,
+      "description": "Run-frozen local-surface gates; disabled settings authorise nothing.\n\nOperational distance, fit and age limits intentionally have no guessed\ndefaults.  They must all be supplied before ``enabled`` can be true.\nObservation age limits surface support only; they are not a reference TTL.",
+      "properties": {
+        "allow_extrapolation": {
+          "default": false,
+          "title": "Allow Extrapolation",
+          "type": "boolean"
+        },
+        "enabled": {
+          "default": false,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "maximum_candidate_observations": {
+          "default": 256,
+          "maximum": 4096,
+          "minimum": 4,
+          "title": "Maximum Candidate Observations",
+          "type": "integer"
+        },
+        "maximum_extrapolation_um": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Extrapolation Um"
+        },
+        "maximum_fit_condition_number": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Fit Condition Number"
+        },
+        "maximum_fit_residual_um": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Fit Residual Um"
+        },
+        "maximum_neighbors": {
+          "default": 12,
+          "maximum": 64,
+          "minimum": 4,
+          "title": "Maximum Neighbors",
+          "type": "integer"
+        },
+        "maximum_observation_age_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Observation Age S"
+        },
+        "maximum_plane_slope_um_per_um": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Plane Slope Um Per Um"
+        },
+        "maximum_prediction_delta_um": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Prediction Delta Um"
+        },
+        "measurement_offset_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measurement Offset Um"
+        },
+        "minimum_fit_inlier_fraction": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Fit Inlier Fraction"
+        },
+        "minimum_plane_points": {
+          "default": 4,
+          "maximum": 64,
+          "minimum": 4,
+          "title": "Minimum Plane Points",
+          "type": "integer"
+        },
+        "neighbor_radius_um": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Neighbor Radius Um"
+        }
+      },
+      "title": "FocusSurfaceSettings",
+      "type": "object"
+    },
+    "RGFocusApproachSettings": {
+      "additionalProperties": false,
+      "description": "One explicit stage-owned final approach shared by calibration and focus.",
+      "properties": {
+        "approach_sign": {
+          "default": 1,
+          "enum": [
+            -1,
+            1
+          ],
+          "title": "Approach Sign",
+          "type": "integer"
+        },
+        "preload_um": {
+          "default": 8,
+          "maximum": 16,
+          "minimum": 1,
+          "title": "Preload Um",
+          "type": "integer"
+        }
+      },
+      "title": "RGFocusApproachSettings",
+      "type": "object"
+    },
+    "exact_predict_request": {
+      "additionalProperties": false,
+      "properties": {
+        "observations": {
+          "items": {
+            "$ref": "#/$defs/FocusObservation"
+          },
+          "type": "array"
+        },
+        "request": {
+          "additionalProperties": false,
+          "description": "One pure query in physical micrometres against a frozen scan context.",
+          "properties": {
+            "attempt_id": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Attempt Id",
+              "type": "string"
+            },
+            "current_z_um": {
+              "title": "Current Z Um",
+              "type": "number"
+            },
+            "expected_binding": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/FocusBinding"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "expected_scan_id": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Expected Scan Id",
+              "type": "string"
+            },
+            "field_id": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Field Id",
+              "type": "string"
+            },
+            "predicted_monotonic_s": {
+              "minimum": 0,
+              "title": "Predicted Monotonic S",
+              "type": "number"
+            },
+            "prediction_id": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Prediction Id",
+              "type": "string"
+            },
+            "settings": {
+              "$ref": "#/$defs/FocusSurfaceSettings"
+            },
+            "target_x_um": {
+              "title": "Target X Um",
+              "type": "number"
+            },
+            "target_y_um": {
+              "title": "Target Y Um",
+              "type": "number"
+            }
+          },
+          "required": [
+            "expected_scan_id",
+            "field_id",
+            "attempt_id",
+            "prediction_id",
+            "target_x_um",
+            "target_y_um",
+            "current_z_um",
+            "predicted_monotonic_s",
+            "settings"
+          ],
+          "title": "FocusPredictionRequest",
+          "type": "object"
+        }
+      },
+      "required": [
+        "observations",
+        "request"
+      ],
+      "type": "object"
+    },
+    "exact_prediction": {
+      "additionalProperties": false,
+      "description": "A target-Z decision whose four statuses have disjoint payloads.",
+      "properties": {
+        "attempt_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "binding": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FocusBinding"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "diagnostics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FocusPredictionDiagnostics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "extrapolated": {
+          "default": false,
+          "title": "Extrapolated",
+          "type": "boolean"
+        },
+        "fault_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "foreign_scan",
+                "binding_mismatch",
+                "binding_unusable",
+                "future_timestamp",
+                "observation_id_conflict",
+                "ambiguous_xy_timestamp",
+                "candidate_limit_exceeded"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fault Code"
+        },
+        "field_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Field Id",
+          "type": "string"
+        },
+        "predicted_monotonic_s": {
+          "minimum": 0,
+          "title": "Predicted Monotonic S",
+          "type": "number"
+        },
+        "prediction_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Prediction Id",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Reason",
+          "type": "string"
+        },
+        "scan_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Scan Id",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "enum": [
+                "seed",
+                "nearest_neighbor",
+                "local_plane"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "status": {
+          "enum": [
+            "usable",
+            "unavailable",
+            "disabled",
+            "fault"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "support_distances_um": {
+          "default": [],
+          "items": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "title": "Support Distances Um",
+          "type": "array"
+        },
+        "support_field_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Support Field Ids",
+          "type": "array"
+        },
+        "support_observation_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Support Observation Ids",
+          "type": "array"
+        },
+        "target_x_um": {
+          "title": "Target X Um",
+          "type": "number"
+        },
+        "target_y_um": {
+          "title": "Target Y Um",
+          "type": "number"
+        },
+        "target_z_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Z Um"
+        },
+        "unavailable_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "no_observations",
+                "insufficient_support",
+                "stale_support",
+                "poor_local_fit",
+                "outside_support",
+                "support_discontinuity",
+                "prediction_delta_exceeded"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unavailable Reason"
+        }
+      },
+      "required": [
+        "scan_id",
+        "field_id",
+        "attempt_id",
+        "prediction_id",
+        "target_x_um",
+        "target_y_um",
+        "status",
+        "reason",
+        "predicted_monotonic_s"
+      ],
+      "title": "FocusPrediction",
+      "type": "object"
+    }
+  },
+  "$id": "https://fast-ofm.org/schema/protocol/v1/focus-surface-exact.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fast OFM exact persisted focus-surface contract"
+}

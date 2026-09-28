@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/request.schema.json",
+  "title": "Fast OFM Core protocol v1 request envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "request_id", "operation", "timeout_ms", "payload"],
+  "properties": {
+    "protocol_version": {"const": "1.0"},
+    "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "operation": {
+      "enum": [
+        "core.capabilities",
+        "rg.measure",
+        "rg.decide",
+        "rg.flat_field.fit",
+        "rg.flat_field.apply",
+        "rg.flat_field.validate",
+        "rg.tissue_field.prepare",
+        "rg.simultaneous.calibrate",
+        "rg.simultaneous.focus.sample",
+        "rg.simultaneous.focus.plan",
+        "rg.simultaneous.focus.fit",
+        "rg.simultaneous.focus.evaluate",
+        "calibration.fit",
+        "calibration.validate",
+        "focus.surface.fit",
+        "focus.surface.predict",
+        "planning.route",
+        "stitching.run",
+        "job.status",
+        "job.cancel"
+      ]
+    },
+    "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 3600000},
+    "payload": {"type": "object"}
+  }
+}

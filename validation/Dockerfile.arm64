@@ -1,0 +1,17 @@
+FROM python:3.11-bookworm@sha256:b99029c95d3d37fb1e4e76d287f7984373dca77c665885986e31b2c95260c13c
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+COPY . /workspace
+
+RUN python -m pip install --upgrade pip \
+    && python -m pip install '.[validation]'
+
+CMD ["python", "-m", "pytest", "-c", "/dev/null", "-q", "--disable-warnings", "/workspace/tests"]

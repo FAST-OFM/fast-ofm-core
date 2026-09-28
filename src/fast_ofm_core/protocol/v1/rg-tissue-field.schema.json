@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/rg-tissue-field.schema.json",
+  "title": "Fast OFM WHITE tissue-field payload and result",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input", "reference", "geometry", "settings", "core_settings"],
+      "properties": {
+        "input": {"$ref": "common.schema.json#/$defs/artifact"},
+        "reference": {"type": "object"},
+        "geometry": {"type": "object"},
+        "settings": {"type": "object"},
+        "core_settings": {"type": "object"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "arrays"],
+      "properties": {
+        "field": {"type": "object"},
+        "arrays": {"$ref": "common.schema.json#/$defs/artifact"}
+      }
+    }
+  }
+}

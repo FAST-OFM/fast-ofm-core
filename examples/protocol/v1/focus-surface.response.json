@@ -1,0 +1,23 @@
+{
+  "protocol_version": "1.0",
+  "request_id": "00000000-0000-4000-8000-000000000002",
+  "result": {
+    "extrapolation_um": 0.0,
+    "fit_residual_um": 0.0,
+    "model": "plane",
+    "position_um": {
+      "x_um": 0.0,
+      "y_um": 0.0
+    },
+    "predicted_z_um": 10.0,
+    "reason": "bounded local focus plane",
+    "slope_um_per_um": 0.0,
+    "status": "predicted",
+    "support_count": 4,
+    "support_distance_um": 0.0,
+    "uncertainty_um": 0.0,
+    "validation_error_um": 7.105427357601002e-15
+  },
+  "status": "completed"
+}
+

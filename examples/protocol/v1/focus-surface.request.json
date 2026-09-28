@@ -1,0 +1,62 @@
+{
+  "operation": "focus.surface.predict",
+  "payload": {
+    "anchors": [
+      {
+        "anchor_id": "a-0",
+        "confidence": 0.95,
+        "position_um": {
+          "x_um": -500.0,
+          "y_um": -500.0,
+          "z_um": 10.0
+        },
+        "source": "rg"
+      },
+      {
+        "anchor_id": "a-1",
+        "confidence": 0.95,
+        "position_um": {
+          "x_um": 500.0,
+          "y_um": -500.0,
+          "z_um": 10.0
+        },
+        "source": "rg"
+      },
+      {
+        "anchor_id": "a-2",
+        "confidence": 0.95,
+        "position_um": {
+          "x_um": -500.0,
+          "y_um": 500.0,
+          "z_um": 10.0
+        },
+        "source": "rg"
+      },
+      {
+        "anchor_id": "a-3",
+        "confidence": 0.95,
+        "position_um": {
+          "x_um": 500.0,
+          "y_um": 500.0,
+          "z_um": 10.0
+        },
+        "source": "rg"
+      }
+    ],
+    "limits": {
+      "maximum_abs_slope": 0.05,
+      "maximum_extrapolation_um": 500.0,
+      "maximum_prediction_delta_um": 40.0,
+      "maximum_residual_um": 2.0,
+      "maximum_support_distance_um": 2000.0
+    },
+    "target_um": {
+      "x_um": 0.0,
+      "y_um": 0.0,
+      "z_um": 10.0
+    }
+  },
+  "protocol_version": "1.0",
+  "request_id": "00000000-0000-4000-8000-000000000002",
+  "timeout_ms": 1000
+}

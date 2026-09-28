@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/stitching-run.schema.json",
+  "title": "Fast OFM standalone stitching job",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tile_manifest", "output_name", "workers", "cache_bytes", "registration_mode"],
+      "properties": {
+        "tile_manifest": {"$ref": "common.schema.json#/$defs/artifact"},
+        "output_name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+        "workers": {"type": "integer", "minimum": 1, "maximum": 64},
+        "cache_bytes": {"type": "integer", "minimum": 67108864},
+        "registration_mode": {"enum": ["full_correlation", "experimental_overlap_strip"]},
+        "pyramid": {"type": "boolean", "const": true},
+        "viewer_dzi": {"type": "boolean"},
+        "minimum_overlap": {"type": "number", "minimum": 0.01, "maximum": 0.99},
+        "correlation_resize": {"type": "number", "minimum": 0.01, "maximum": 1},
+        "work_tile_size": {"type": "integer", "minimum": 128, "maximum": 16384},
+        "maximum_runtime_s": {"type": "integer", "minimum": 60, "maximum": 86400}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ome_bigtiff", "registration_report", "resource_report"],
+      "properties": {
+        "ome_bigtiff": {"$ref": "common.schema.json#/$defs/artifact"},
+        "registration_report": {"$ref": "common.schema.json#/$defs/artifact"},
+        "resource_report": {"$ref": "common.schema.json#/$defs/artifact"},
+        "viewer_dzi": {"$ref": "common.schema.json#/$defs/artifact"}
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "operation": "planning.route",
+  "payload": {
+    "grid": {
+      "columns": 3,
+      "origin_um": {
+        "x_um": 100.0,
+        "y_um": 200.0
+      },
+      "rows": 2,
+      "step_um": {
+        "x_um": 10.0,
+        "y_um": -20.0
+      }
+    },
+    "traversal": "exact_grid_serpentine"
+  },
+  "protocol_version": "1.0",
+  "request_id": "00000000-0000-4000-8000-000000000001",
+  "timeout_ms": 1000
+}
+

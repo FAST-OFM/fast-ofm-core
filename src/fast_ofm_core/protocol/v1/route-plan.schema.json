@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/route-plan.schema.json",
+  "title": "Fast OFM independent route-planning payload and result",
+  "$defs": {
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_um", "maximum_um"],
+      "properties": {
+        "minimum_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "maximum_um": {"$ref": "common.schema.json#/$defs/xy_um"}
+      }
+    },
+    "exact_grid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin_um", "step_um", "columns", "rows"],
+      "properties": {
+        "origin_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "step_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "columns": {"type": "integer", "minimum": 1},
+        "rows": {"type": "integer", "minimum": 1}
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bounds": {"$ref": "#/$defs/bounds"},
+        "grid": {"$ref": "#/$defs/exact_grid"},
+        "field_size_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "overlap_fraction": {"type": "number", "minimum": 0, "exclusiveMaximum": 1},
+        "traversal": {"enum": ["serpentine", "spiral", "component_serpentine", "exact_grid_serpentine"]},
+        "region_mask": {"$ref": "common.schema.json#/$defs/artifact"},
+        "region_polygons": {"type": "array", "items": {"type": "array", "minItems": 3, "items": {"$ref": "common.schema.json#/$defs/xy_um"}}},
+        "focus_anchor_spacing_um": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "oneOf": [
+        {
+          "required": ["grid", "traversal"],
+          "properties": {"traversal": {"const": "exact_grid_serpentine"}}
+        },
+        {
+          "required": ["bounds", "field_size_um", "overlap_fraction", "traversal"],
+          "properties": {"traversal": {"enum": ["serpentine", "spiral", "component_serpentine"]}}
+        }
+      ]
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "kind", "position_um"],
+      "properties": {
+        "index": {"type": "integer", "minimum": 0},
+        "kind": {"enum": ["visit", "focus_anchor", "row_turn", "component_start", "skip"]},
+        "position_um": {"$ref": "common.schema.json#/$defs/xy_um"},
+        "component_id": {"type": "string"},
+        "reason": {"type": "string"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "input_digest", "actions"],
+      "properties": {
+        "route_id": {"type": "string", "minLength": 1},
+        "input_digest": {"$ref": "common.schema.json#/$defs/sha256"},
+        "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}},
+        "component_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

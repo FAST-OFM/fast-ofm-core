@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/response.schema.json",
+  "title": "Fast OFM Core protocol v1 response envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "request_id", "status"],
+  "properties": {
+    "protocol_version": {"const": "1.0"},
+    "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "status": {"enum": ["completed", "accepted", "refused", "failed", "cancelled"]},
+    "job_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "result": {"type": "object"},
+    "error": {"$ref": "common.schema.json#/$defs/error"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "accepted"}}},
+      "then": {"required": ["job_id"]}
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["refused", "failed"]}}},
+      "then": {"required": ["error"]}
+    }
+  ]
+}

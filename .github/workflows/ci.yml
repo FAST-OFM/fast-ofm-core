@@ -1,0 +1,36 @@
+name: Source validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install validation tools
+        run: >-
+          python -m pip install --upgrade pip build &&
+          python -m pip install ruff reuse==5.1.1
+      - name: Verify file-level licensing
+        run: reuse lint
+      - name: Install core package
+        run: python -m pip install -e ".[validation]"
+      - name: Check Python source
+        run: python -m ruff check src tests tools
+      - name: Require the native NMI extension
+        run: >-
+          python -c "from fast_ofm_core.focus.rg import _rg_nmi;
+          assert _rg_nmi.__file__.endswith(('.so', '.pyd')), _rg_nmi.__file__"
+      - name: Run tests
+        run: python -m pytest -q
+      - name: Build distributable artifacts
+        run: python -m build

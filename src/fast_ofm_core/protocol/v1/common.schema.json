@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fast-ofm.org/schema/protocol/v1/common.schema.json",
+  "title": "Fast OFM Core protocol v1 common types",
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "sha256", "media_type"],
+      "properties": {
+        "uri": {"type": "string", "pattern": "^file:"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "role": {"type": "string", "minLength": 1, "maxLength": 100}
+      }
+    },
+    "xy_um": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x_um", "y_um"],
+      "properties": {
+        "x_um": {"type": "number"},
+        "y_um": {"type": "number"}
+      }
+    },
+    "xyz_um": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x_um", "y_um", "z_um"],
+      "properties": {
+        "x_um": {"type": "number"},
+        "y_um": {"type": "number"},
+        "z_um": {"type": "number"}
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+        "message": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "retryable": {"type": "boolean"},
+        "details": {"type": "object"}
+      }
+    }
+  }
+}
